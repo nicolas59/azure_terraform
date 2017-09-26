@@ -141,8 +141,8 @@ resource "azurerm_virtual_machine" "nexus" {
   os_profile_linux_config {
     disable_password_authentication = true
     ssh_keys {
-      path = "/home/${var.app[\"user\"]}/.ssh/authorized_keys"
-      key_data = "${var.app.sshcert}"
+      path = "/home/${var.app["user"]}/.ssh/authorized_keys"
+      key_data = "${var.app["sshcert"]}"
     }
   }
 
