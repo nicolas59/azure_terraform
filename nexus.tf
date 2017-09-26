@@ -1,10 +1,10 @@
 #Id de la resource groupe existante
 variable "rg_demo_vnet" {
-    default:"5124d2fd-9621-4e95-8944-e02f352e3607"
+    default = "5124d2fd-9621-4e95-8944-e02f352e3607"
 }
 
 variable "subnet_app" {
-    default:"5124d2fd-9621-4e95-8944-e02f352e3607"
+    default = "5124d2fd-9621-4e95-8944-e02f352e3607"
 }
 
 #resource "azurerm_resource_group" "test" {
