@@ -1,6 +1,6 @@
 
-resource "azurerm_public_ip" "nexus" {
-  name                         = "nexus_public_ip"
+resource "azurerm_public_ip" "nginx" {
+  name                         = "nginx_public_ip"
   location                     = "${var.region}"
   resource_group_name          = "${var.rg_demo_vnet}"
   public_ip_address_allocation = "dynamic"
@@ -10,8 +10,8 @@ resource "azurerm_public_ip" "nexus" {
   }
 }
 
-resource "azurerm_network_security_group" "sg-nexus" {
-  name                = "sg-nexus"
+resource "azurerm_network_security_group" "sg-nginx" {
+  name                = "sg-nginx"
   location            = "${var.region}"
   resource_group_name = "${var.rg_demo_vnet}"
 
@@ -63,20 +63,20 @@ resource "azurerm_network_security_group" "sg-nexus" {
 #  address_prefix       = "10.0.2.0/24"
 #}
 
-resource "azurerm_network_interface" "nexus" {
-  name                = "nexus_int"
+resource "azurerm_network_interface" "nginx" {
+  name                = "nginx_int"
   location            = "North Europe"
   resource_group_name = "${var.rg_demo_vnet}"
-  network_security_group_id  = "${azurerm_network_security_group.sg-nexus.id}"
+  network_security_group_id  = "${azurerm_network_security_group.sg-nginx.id}"
   ip_configuration {
     name                          = "testconfiguration1"
     subnet_id                     = "${var.subnet_app}"
     private_ip_address_allocation = "dynamic"
-    public_ip_address_id          = "${azurerm_public_ip.nexus.id}"
+    public_ip_address_id          = "${azurerm_public_ip.nginx.id}"
   }
 }
 
-resource "azurerm_managed_disk" "nexus" {
+resource "azurerm_managed_disk" "nginx" {
   name                 = "datadisk_existing"
   location             = "North Europe"
   resource_group_name  = "${var.rg_demo_vnet}"
@@ -85,11 +85,11 @@ resource "azurerm_managed_disk" "nexus" {
   disk_size_gb         = "10"
 }
 
-resource "azurerm_virtual_machine" "nexus" {
+resource "azurerm_virtual_machine" "nginx" {
   name                  = "${var.app["name"]}"
   location              = "North Europe"
   resource_group_name   = "${var.rg_demo_vnet}"
-  network_interface_ids = ["${azurerm_network_interface.nexus.id}"]
+  network_interface_ids = ["${azurerm_network_interface.nginx.id}"]
   vm_size               = "Standard_DS1_v2"
 
   # Uncomment this line to delete the OS disk automatically when deleting the VM
@@ -122,11 +122,11 @@ resource "azurerm_virtual_machine" "nexus" {
   #}
 
   storage_data_disk {
-    name            = "${azurerm_managed_disk.nexus.name}"
-    managed_disk_id = "${azurerm_managed_disk.nexus.id}"
+    name            = "${azurerm_managed_disk.nginx.name}"
+    managed_disk_id = "${azurerm_managed_disk.nginx.id}"
     create_option   = "Attach"
     lun             = 1
-    disk_size_gb    = "${azurerm_managed_disk.nexus.disk_size_gb}"
+    disk_size_gb    = "${azurerm_managed_disk.nginx.disk_size_gb}"
   }
 
   os_profile_linux_config {
