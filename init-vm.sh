@@ -1,4 +1,4 @@
 #!/bin/sh
 apt-get update
-apt-get install nginx
+apt-get install -y nginx
 service ngnix start
