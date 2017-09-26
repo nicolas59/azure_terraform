@@ -29,7 +29,7 @@ variable "subnet_app" {
 resource "azurerm_network_interface" "test" {
   name                = "nexus_int"
   location            = "North Europe"
-  resource_group_name = "${rg_demo_vnet}"
+  resource_group_name = "${var.rg_demo_vnet}"
 
   ip_configuration {
     name                          = "testconfiguration1"
