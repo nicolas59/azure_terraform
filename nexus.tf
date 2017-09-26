@@ -33,7 +33,7 @@ resource "azurerm_network_interface" "test" {
 
   ip_configuration {
     name                          = "testconfiguration1"
-    subnet_id                     = "${subnet_app}"
+    subnet_id                     = "${var.subnet_app}"
     private_ip_address_allocation = "dynamic"
   }
 }
@@ -41,7 +41,7 @@ resource "azurerm_network_interface" "test" {
 resource "azurerm_managed_disk" "test" {
   name                 = "datadisk_existing"
   location             = "North Europe"
-  resource_group_name  = "${rg_demo_vnet}"
+  resource_group_name  = "${var.rg_demo_vnet}"
   storage_account_type = "Standard_LRS"
   create_option        = "Empty"
   disk_size_gb         = "10"
@@ -50,7 +50,7 @@ resource "azurerm_managed_disk" "test" {
 resource "azurerm_virtual_machine" "nexus" {
   name                  = "acctvm"
   location              = "North Europe"
-  resource_group_name   = "${rg_demo_vnet}"
+  resource_group_name   = "${var.rg_demo_vnet}"
   network_interface_ids = ["${azurerm_network_interface.test.id}"]
   vm_size               = "Standard_DS1_v2"
 
