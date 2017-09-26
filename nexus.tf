@@ -148,7 +148,7 @@ resource "azurerm_virtual_machine" "nexus" {
 
   os_profile {
     computer_name  = "hostname"
-    admin_username = "testadmin"
+    admin_username = "${var.app["user"]}"
     admin_password = "Password1234!"
   }
 
