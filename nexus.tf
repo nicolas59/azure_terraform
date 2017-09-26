@@ -26,7 +26,7 @@ variable "subnet_app" {
 #  address_prefix       = "10.0.2.0/24"
 #}
 
-resource "azurerm_network_interface" "test" {
+resource "azurerm_network_interface" "nexus" {
   name                = "nexus_int"
   location            = "North Europe"
   resource_group_name = "${var.rg_demo_vnet}"
@@ -38,7 +38,7 @@ resource "azurerm_network_interface" "test" {
   }
 }
 
-resource "azurerm_managed_disk" "test" {
+resource "azurerm_managed_disk" "nexus" {
   name                 = "datadisk_existing"
   location             = "North Europe"
   resource_group_name  = "${var.rg_demo_vnet}"
@@ -51,7 +51,7 @@ resource "azurerm_virtual_machine" "nexus" {
   name                  = "acctvm"
   location              = "North Europe"
   resource_group_name   = "${var.rg_demo_vnet}"
-  network_interface_ids = ["${azurerm_network_interface.test.id}"]
+  network_interface_ids = ["${azurerm_network_interface.nexus.id}"]
   vm_size               = "Standard_DS1_v2"
 
   # Uncomment this line to delete the OS disk automatically when deleting the VM
@@ -84,11 +84,11 @@ resource "azurerm_virtual_machine" "nexus" {
   }
 
   storage_data_disk {
-    name            = "${azurerm_managed_disk.test.name}"
-    managed_disk_id = "${azurerm_managed_disk.test.id}"
+    name            = "${azurerm_managed_disk.nexus.name}"
+    managed_disk_id = "${azurerm_managed_disk.nexus.id}"
     create_option   = "Attach"
     lun             = 1
-    disk_size_gb    = "${azurerm_managed_disk.test.disk_size_gb}"
+    disk_size_gb    = "${azurerm_managed_disk.nexus.disk_size_gb}"
   }
 
   os_profile {
