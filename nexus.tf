@@ -13,8 +13,8 @@ variable "region" {
 
 resource "azurerm_public_ip" "nexus" {
   name                         = "nexus_public_ip"
-  location                     = "${region}"
-  resource_group_name          = "${rg_demo_vnet}"
+  location                     = "${var.region}"
+  resource_group_name          = "${var.rg_demo_vnet}"
   public_ip_address_allocation = "dynamic"
 
   tags {
@@ -49,8 +49,8 @@ resource "azurerm_network_interface" "nexus" {
   ip_configuration {
     name                          = "testconfiguration1"
     subnet_id                     = "${var.subnet_app}"
-    private_ip_address_allocation = "dynamic",
-    public_ip_address_id         = "${azurerm_public_ip.nexus.id}"
+    private_ip_address_allocation = "dynamic"
+    public_ip_address_id          = "${azurerm_public_ip.nexus.id}"
   }
 }
 
