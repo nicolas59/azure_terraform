@@ -11,6 +11,15 @@ variable "region" {
     default = "North Europe"
 }
 
+variable "app" {
+  type = "map"
+  default = {
+    "user" = "nrousseau"
+    "sshcert" = "Certificat"
+  }
+  description = "Public ssh key to connect to the vm"
+}
+
 resource "azurerm_public_ip" "nexus" {
   name                         = "nexus_public_ip"
   location                     = "${var.region}"
@@ -129,11 +138,20 @@ resource "azurerm_virtual_machine" "nexus" {
     disk_size_gb    = "${azurerm_managed_disk.nexus.disk_size_gb}"
   }
 
-  os_profile {
-    computer_name  = "hostname"
-    admin_username = "testadmin"
-    admin_password = "Password1234!"
+  os_profile_linux_config {
+    disable_password_authentication = true
+     disable_password_authentication = true
+    ssh_keys {
+      path = "/home/${var.app.user}/.ssh/authorized_keys"
+      key_data = "${var.app.sshcert}"
+    }
   }
+
+  #os_profile {
+  #  computer_name  = "hostname"
+  #  admin_username = "testadmin"
+  #  admin_password = "Password1234!"
+  #}
 
   os_profile_linux_config {
     disable_password_authentication = false
