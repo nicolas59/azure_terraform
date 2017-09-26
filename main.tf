@@ -1,26 +1,3 @@
-#Id de la resource groupe existante
-variable "rg_demo_vnet" {
-    default = "demo-vnet"
-}
-
-variable "subnet_app" {
-    default = "/subscriptions/5124d2fd-9621-4e95-8944-e02f352e3607/resourceGroups/demo-vnet/providers/Microsoft.Network/virtualNetworks/vnet/subnets/snet-app"
-}
-
-variable "region" {
-    default = "North Europe"
-}
-
-
-variable "app" {
-  type = "map"
-  default = {
-    user = "nrousseau"
-    sshcert = "Certificat"
-    name = "nexus"
-  }
-  description = "Public ssh key to connect to the vm"
-}
 
 resource "azurerm_public_ip" "nexus" {
   name                         = "nexus_public_ip"
@@ -161,7 +138,7 @@ resource "azurerm_virtual_machine" "nexus" {
   }
 
   os_profile {
-    computer_name  = "hostname"
+    computer_name  = "nginx"
     admin_username = "${var.app["user"]}"
     admin_password = "Password1234!"
     custom_data = "${file("init-vm.sh")}"
