@@ -14,8 +14,8 @@ variable "region" {
 variable "app" {
   type = "map"
   default = {
-    "user" = "nrousseau"
-    "sshcert" = "Certificat"
+    user = "nrousseau"
+    sshcert = "Certificat"
   }
   description = "Public ssh key to connect to the vm"
 }
