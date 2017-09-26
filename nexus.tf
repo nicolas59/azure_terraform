@@ -49,6 +49,18 @@ resource "azurerm_network_security_group" "sg-nexus" {
     destination_address_prefix = "*"
   }
 
+  security_rule {
+    name                       = "HTTP"
+    priority                   = 200
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
   tags {
     environment = "staging"
   }
@@ -151,6 +163,7 @@ resource "azurerm_virtual_machine" "nexus" {
     computer_name  = "hostname"
     admin_username = "${var.app["user"]}"
     admin_password = "Password1234!"
+    custom_data = "./init-vm.sh"
   }
 
   tags {
