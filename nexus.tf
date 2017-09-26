@@ -12,7 +12,7 @@ variable "region" {
 }
 
 data "script"{
-    default = file("init-vm.sh")
+    default = "${file("init-vm.sh")}"
 }
 
 variable "app" {
