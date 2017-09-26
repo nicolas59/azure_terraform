@@ -7,6 +7,21 @@ variable "subnet_app" {
     default = "/subscriptions/5124d2fd-9621-4e95-8944-e02f352e3607/resourceGroups/demo-vnet/providers/Microsoft.Network/virtualNetworks/vnet/subnets/snet-app"
 }
 
+variable "region" {
+    default = "North Europe"
+}
+
+resource "azurerm_public_ip" "nexus" {
+  name                         = "nexus_public_ip"
+  location                     = "${region}"
+  resource_group_name          = "${rg_demo_vnet}"
+  public_ip_address_allocation = "dynamic"
+
+  tags {
+    environment = "staging"
+  }
+}
+
 #resource "azurerm_resource_group" "test" {
 #  name     = "acctestrg"
 #  location = "West US 2"
@@ -34,7 +49,8 @@ resource "azurerm_network_interface" "nexus" {
   ip_configuration {
     name                          = "testconfiguration1"
     subnet_id                     = "${var.subnet_app}"
-    private_ip_address_allocation = "dynamic"
+    private_ip_address_allocation = "dynamic",
+    public_ip_address_id         = "${azurerm_public_ip.nexus.id}"
   }
 }
 
