@@ -146,11 +146,11 @@ resource "azurerm_virtual_machine" "nexus" {
     }
   }
 
-  #os_profile {
-  #  computer_name  = "hostname"
-  #  admin_username = "testadmin"
-  #  admin_password = "Password1234!"
-  #}
+  os_profile {
+    computer_name  = "hostname"
+    admin_username = "testadmin"
+    admin_password = "Password1234!"
+  }
 
   tags {
     environment = "staging"
