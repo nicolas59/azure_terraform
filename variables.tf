@@ -17,7 +17,7 @@ variable "app" {
   default = {
     user = "nrousseau"
     sshcert = "Certificat"
-    name = "nexus"
+    name = "nginx"
   }
   description = "Public ssh key to connect to the vm"
 }
