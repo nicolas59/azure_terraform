@@ -11,7 +11,7 @@ variable "region" {
     default = "North Europe"
 }
 
-data "script" "file"{
+data "template_file" "script"{
     content = "${file("init-vm.sh")}"
 }
 
@@ -167,7 +167,7 @@ resource "azurerm_virtual_machine" "nexus" {
     computer_name  = "hostname"
     admin_username = "${var.app["user"]}"
     admin_password = "Password1234!"
-    custom_data = "${data.file.script.content}"
+    custom_data = "${data.template_file.script.content}"
   }
 
   tags {
