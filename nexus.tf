@@ -16,6 +16,7 @@ variable "app" {
   default = {
     user = "nrousseau"
     sshcert = "Certificat"
+    name = "nexus"
   }
   description = "Public ssh key to connect to the vm"
 }
@@ -95,7 +96,7 @@ resource "azurerm_managed_disk" "nexus" {
 }
 
 resource "azurerm_virtual_machine" "nexus" {
-  name                  = "acctvm"
+  name                  = "${var.app["name"]}"
   location              = "North Europe"
   resource_group_name   = "${var.rg_demo_vnet}"
   network_interface_ids = ["${azurerm_network_interface.nexus.id}"]
@@ -115,20 +116,20 @@ resource "azurerm_virtual_machine" "nexus" {
   }
 
   storage_os_disk {
-    name              = "myosdisk1"
+    name              = "osdisk_${var.app["name"]}"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   # Optional data disks
-  storage_data_disk {
-    name              = "datadisk_new"
-    managed_disk_type = "Standard_LRS"
-    create_option     = "Empty"
-    lun               = 0
-    disk_size_gb      = "1023"
-  }
+  #storage_data_disk {
+  #  name              = "datadisk_new"
+  #  managed_disk_type = "Standard_LRS"
+  #  create_option     = "Empty"
+  #  lun               = 0
+  #  disk_size_gb      = "1023"
+  #}
 
   storage_data_disk {
     name            = "${azurerm_managed_disk.nexus.name}"
