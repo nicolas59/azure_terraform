@@ -22,6 +22,28 @@ resource "azurerm_public_ip" "nexus" {
   }
 }
 
+resource "azurerm_network_security_group" "sg-nexus" {
+  name                = "sg-nexus"
+  location            = "${var.region}"
+  resource_group_name = "${var.rg_demo_vnet}"
+
+  security_rule {
+    name                       = "SSH"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  tags {
+    environment = "staging"
+  }
+}
+
 #resource "azurerm_resource_group" "test" {
 #  name     = "acctestrg"
 #  location = "West US 2"
@@ -45,7 +67,7 @@ resource "azurerm_network_interface" "nexus" {
   name                = "nexus_int"
   location            = "North Europe"
   resource_group_name = "${var.rg_demo_vnet}"
-
+  network_security_group_id  = "${azurerm_network_security_group.sg-nexus.id}"
   ip_configuration {
     name                          = "testconfiguration1"
     subnet_id                     = "${var.subnet_app}"
