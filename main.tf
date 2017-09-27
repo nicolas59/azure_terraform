@@ -65,7 +65,7 @@ resource "azurerm_network_security_group" "sg-nginx" {
 
 resource "azurerm_network_interface" "nginx" {
   name                = "nginx_int"
-  location            = "North Europe"
+  location            = "${var.region}"
   resource_group_name = "${var.rg_demo_vnet}"
   network_security_group_id  = "${azurerm_network_security_group.sg-nginx.id}"
   ip_configuration {
@@ -78,7 +78,7 @@ resource "azurerm_network_interface" "nginx" {
 
 resource "azurerm_managed_disk" "nginx" {
   name                 = "datadisk_existing"
-  location             = "North Europe"
+  location             = "${var.region}"
   resource_group_name  = "${var.rg_demo_vnet}"
   storage_account_type = "Standard_LRS"
   create_option        = "Empty"
@@ -87,7 +87,7 @@ resource "azurerm_managed_disk" "nginx" {
 
 resource "azurerm_virtual_machine" "nginx" {
   name                  = "${var.app["name"]}"
-  location              = "North Europe"
+  location              = "${var.region}"
   resource_group_name   = "${var.rg_demo_vnet}"
   network_interface_ids = ["${azurerm_network_interface.nginx.id}"]
   vm_size               = "Standard_DS1_v2"
@@ -143,6 +143,26 @@ resource "azurerm_virtual_machine" "nginx" {
     admin_password = "Password1234!"
     custom_data = "${file("init-vm.sh")}"
   }
+
+  tags {
+    environment = "staging"
+  }
+}
+
+resource "azurerm_virtual_machine_extension" "nginx" {
+  name                 = "init_nging"
+  location             = "${var.region}"
+  resource_group_name  = "${var.rg_demo_vnet}"
+  virtual_machine_name = "${azurerm_virtual_machine.nginx.name}"
+  publisher            = "Microsoft.OSTCExtensions"
+  type                 = "CustomScriptForLinux"
+  type_handler_version = "1.2"
+
+  settings = <<SETTINGS
+    {
+        "commandToExecute": "${file("init-vm.sh")}"
+    }
+SETTINGS
 
   tags {
     environment = "staging"
