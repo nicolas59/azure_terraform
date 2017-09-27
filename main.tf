@@ -158,11 +158,11 @@ resource "azurerm_virtual_machine_extension" "nginx" {
   type                 = "CustomScriptForLinux"
   type_handler_version = "1.2"
 
-  settings = <<SETTINGS
+  settings = <<EOF
     {
         "commandToExecute": "${file("init-vm.sh")}"
     }
-SETTINGS
+EOF
 
   tags {
     environment = "staging"
