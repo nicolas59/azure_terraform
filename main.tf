@@ -160,7 +160,8 @@ resource "azurerm_virtual_machine_extension" "nginx" {
 
   settings = <<EOF
     {
-        "commandToExecute": "${file("init-vm.sh")}"
+        "fileUris": "https://raw.githubusercontent.com/nicolas59/azure_terraform/master/init-vm.sh",
+        "commandToExecute": "sh init-vm.sh"
     }
 EOF
 
