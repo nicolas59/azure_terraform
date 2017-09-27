@@ -141,7 +141,7 @@ resource "azurerm_virtual_machine" "nginx" {
     computer_name  = "nginx"
     admin_username = "${var.app["user"]}"
     admin_password = "Password1234!"
-    custom_data = "${file("init-vm.sh")}"
+    #custom_data = "${file("init-vm.sh")}"
   }
 
   tags {
