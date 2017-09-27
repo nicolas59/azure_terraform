@@ -17,6 +17,14 @@ terraform plan -var 'app={sshcert="ssh-rsa ..."}'
 terraform apply -var 'app={sshcert="ssh-rsa ..."}'
 ```
 
+Obtenir des informations sur la vm
+===
+* Executer les commandes suivantes : 
+```
+terraform refresh
+terraform output
+```
+
 Destruction des ressources
 ==============
 ```
