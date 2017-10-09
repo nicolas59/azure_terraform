@@ -1,3 +1,4 @@
+#!/bin/sh
 echo "Create rancher container"
 docker pull rancher/server:stable
 docker run --name=rancheros -d --restart=always -p 8080:8080  -p 9345:934 rancher/server:stable \
