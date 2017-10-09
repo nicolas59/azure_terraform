@@ -1,0 +1,8 @@
+Server=zabbix-proxy
+ServerActive=zabbix-proxy:10052
+Hostname=<nom du serveur>
+SourceIP=<adresse IP de la machine>
+ListenIP=<adresse IP de la machine>
+EnableRemoteCommands=1
+HostMetadataItem=Azureboulanger
+Include=/etc/zabbix/zabbix_agentd.d/*.conf
