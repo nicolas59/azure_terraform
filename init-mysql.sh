@@ -1,5 +1,5 @@
 #!/bin/sh
-mysql_password=P1nbrg@9!è%
+mysql_password=PasswdTest
 
 echo "Create mysql container"
 docker pull mysql/mysql-server

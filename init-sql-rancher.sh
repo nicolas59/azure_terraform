@@ -1,4 +1,4 @@
 #!/bin/sh
-apt-get install -y mysql-client
-mysql -u root -p P1nbrg@9!è% < init-rancher.sql
-
+mysql_password=PasswdTest
+docker cp init-rancher.sql mysql-container:/init-rancher.sql
+docker exec mysql -uroot -p$mysql_password < init-rancher.sql
