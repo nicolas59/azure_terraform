@@ -1,0 +1,51 @@
+version: '3'
+networks:
+  traefik-net:
+    external: true
+  booksfordevops_com-network:
+
+services:
+  mysql:
+    image: mysql:5.7
+    volumes:
+     - db_data:/var/lib/mysql
+    networks:
+     - booksfordevops_com-network
+    environment:
+     MYSQL_ROOT_PASSWORD: p@ssword!
+     MYSQL_DATABASE: wordpress
+     MYSQL_USER: wordpress
+     MYSQL_PASSWORD: wordpress
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels: [APP=WORDPRESS]
+      restart_policy:
+        condition: on-failure
+  wordpress:
+    image: wordpress:4.7.3-php7.1-apache
+    ports:
+      - 8000:80
+    depends_on:
+      - mysql
+    networks:
+      - booksfordevops_com-network
+      - traefik-net
+    volumes:
+      - /data/booksfordevops_com-wordpress:/var/www/html
+    environment:
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_TABLE_PREFIX: wp_
+    deploy:
+      mode: replicated
+      replicas: 2
+      labels: 
+        APP: WORDPRESS
+        traefik.port: 80
+        traefik.frontend.rule: "PathPrefix:/wp/,/wp-admin/"
+      restart_policy:
+        condition: on-failure
+volumes:
+  db_data:
