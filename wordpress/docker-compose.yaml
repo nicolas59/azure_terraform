@@ -1,0 +1,36 @@
+version: '3'
+networks:
+  booksfordevops_com-network:
+services:
+  mysql:
+    image: mysql:8.0.3
+    environment:
+     MYSQL_ROOT_PASSWORD: p@ssword!
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels: [APP=MYSQL]
+      restart_policy:
+        condition: always
+  wordpress:
+    image: wordpress:4.7.3-php7.1-apache
+    ports:
+      - 8000:80
+    links:
+      - mysql
+    networks:
+      - booksfordevops_com-network
+    volumes:
+      - /data/booksfordevops_com-wordpress:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: p@ssword!
+      WORDPRESS_DB_NAME: db_name
+      WORDPRESS_TABLE_PREFIX: wp_
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels: [APP=WORDPRESS]
+      restart_policy:
+        condition: always
